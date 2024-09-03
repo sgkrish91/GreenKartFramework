@@ -22,15 +22,22 @@ public class OfferPageStepDefinition {
 		this.testContextSetup=testContextSetup;
 	}
 	
+	//Code to switch the control from parent window to child window which is Offers Page
+	public void switchToOffersPage() {
+		
+		 WebElement topDeals=testContextSetup.driver.findElement(By.linkText("Top Deals"));
+		 topDeals.click();
+		 Set<String> s1=testContextSetup.driver.getWindowHandles();	//To get the list of all the windows opened
+		 Iterator<String> i1=s1.iterator();	//To iterate through the list of all windows
+		 String parentWindow=i1.next(); //To get the parent window
+		 String childWindow=i1.next();	//To get the next child window
+		 testContextSetup.driver.switchTo().window(childWindow);	//Switched control to child window
+	}
+	
 	@Then("User searched for {string} shortname in offers page")
 	public void user_searched_for_same_shortname_in_offers_page(String shortName) throws InterruptedException {
-	    WebElement topDeals=testContextSetup.driver.findElement(By.linkText("Top Deals"));
-	    topDeals.click();
-	    Set<String> s1=testContextSetup.driver.getWindowHandles();	//To get the list of all the windows opened
-	    Iterator<String> i1=s1.iterator();	//To iterate through the list of all windows
-	    String parentWindow=i1.next();	
-	    String childWindow=i1.next();
-	    testContextSetup.driver.switchTo().window(childWindow);	//Switched control to child window
+	    
+		switchToOffersPage();
 	    WebElement search=testContextSetup.driver.findElement(By.id("search-field"));
 	    search.sendKeys(shortName);
 	    Thread.sleep(2000);
