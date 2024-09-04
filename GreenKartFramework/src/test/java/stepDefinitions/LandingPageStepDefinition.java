@@ -14,12 +14,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import pageObjects.LandingPage;
 import utils.TestContextSetup;
 
 public class LandingPageStepDefinition {
 	
 	public TestContextSetup testContextSetup;
-	
 	public LandingPageStepDefinition(TestContextSetup testContextSetup) {
 		this.testContextSetup=testContextSetup;
 	}
@@ -34,11 +34,10 @@ public class LandingPageStepDefinition {
 	
 	@When("User searched with shortname {string} and extracted actual name of product")
 	public void user_searched_with_shortname_and_extracted_actual_name_of_product(String shortName) throws InterruptedException {
-		WebElement search=testContextSetup.driver.findElement(By.xpath("//input[@type='search']"));
-		search.sendKeys(shortName);
+		LandingPage lp=new LandingPage(testContextSetup.driver);
+		lp.enterSearchName(shortName);
 		Thread.sleep(2000);
-		WebElement product=testContextSetup.driver.findElement(By.cssSelector("h4.product-name"));
-		testContextSetup.landingPageProdName=product.getText().split("-")[0].trim();
+		testContextSetup.landingPageProdName=lp.getProductName();
 		System.out.println(testContextSetup.landingPageProdName + " is extracted from HomePage");
 	}
 
