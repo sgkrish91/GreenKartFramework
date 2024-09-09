@@ -1,40 +1,34 @@
 package stepDefinitions;
 
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
+import java.io.IOException;
 
-import java.util.Iterator;
-import java.util.Set;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pageObjects.LandingPage;
+import utils.BaseClass;
 import utils.TestContextSetup;
 
 public class LandingPageStepDefinition {
 	
 	public TestContextSetup testContextSetup;
+	public BaseClass baseClass;
 	public LandingPageStepDefinition(TestContextSetup testContextSetup) {
 		this.testContextSetup=testContextSetup;
 	}
 	
 	@Given("User is on GreenKart landing page")
-	public void user_is_on_green_kart_landing_page() {
-		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver-win64\\chromedriver.exe");
-		testContextSetup.driver=new ChromeDriver();
-		testContextSetup.driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
-		testContextSetup.driver.manage().window().maximize();
+	public void user_is_on_green_kart_landing_page() throws IOException {
+		
+		/*We don't need to write any code to invoke the browser here, because it is already handled in BaseClass.
+		When control comes to this stepDefinition file, the constructor is called first.
+		It has created an instance of TestContextSetup class.
+		This in turn calls the webDriverManager() method in the BaseClass and the steps related to invoking the browser is carried out.
+		*/
 	}
 	
 	@When("User searched with shortname {string} and extracted actual name of product")
 	public void user_searched_with_shortname_and_extracted_actual_name_of_product(String shortName) throws InterruptedException {
-		LandingPage lp=new LandingPage(testContextSetup.driver);
+		LandingPage lp=testContextSetup.pom.getLandingPage();
 		lp.enterSearchName(shortName);
 		Thread.sleep(2000);
 		testContextSetup.landingPageProdName=lp.getProductName();
